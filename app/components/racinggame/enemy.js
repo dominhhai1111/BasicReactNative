@@ -1,15 +1,8 @@
 import React, {Component} from 'react';
 import {
-    Platform,
-    StyleSheet,
-    Text,
     View,
     Image,
-    Button,
-    Alert,
     Animated,
-    ImageBackground,
-    Dimensions
 } from 'react-native';
 
 export default class Enemy extends Component {
