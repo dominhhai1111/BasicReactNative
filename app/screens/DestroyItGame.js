@@ -76,19 +76,23 @@ export default class DestroyItGame extends Component<Props> {
     }
 
     getSourceImage(type, color) {
-         //var url1 = '../img/destroyit/' + type + '_' + color + '.png';
-        var url2 = '../img/destroyit/car_red.png';
-        console.log(`../img/destroyit/${type}_${color}.png`);
-        console.log(url2);
-        var source = `../img/destroyit/${type}_${color}.png`;
+        var source = '';
+        if (type == 'car' && color == 'red') {
+            source = require('../img/destroyit/car_red.png');
+        }
+
+        if (type == 'car' && color == 'yellow') {
+            source = require('../img/destroyit/car_yellow.png');
+        }
+
         return source;
     }
 
     createItem() {
         var itemStartPosX = this.getItemStartPosX();
         var itemSpeed = Math.floor(Math.random() * 2 + 1);
-        var color = this.colors[Math.floor(Math.random() * this.defaultColors.length)];
-        var type = this.types[Math.floor(Math.random() * this.defaultTypes.length)];
+        var color = this.defaultColors[Math.floor(Math.random() * this.defaultColors.length)];
+        var type = this.defaultTypes[Math.floor(Math.random() * this.defaultTypes.length)];
         var source = this.getSourceImage(type, color);
         var items = this.state.items;
         items.push(
@@ -96,7 +100,6 @@ export default class DestroyItGame extends Component<Props> {
         );
 
         ++this.state.number;
-        console.log(items);
         this.setState({items});
     }
 
@@ -133,15 +136,39 @@ export default class DestroyItGame extends Component<Props> {
         return positionX;
     }
 
-    onPress(number) {
-        console.log(number);
+    checkPoint(key) {
+        var increasePoint = false;
+        if (this.state.items[key].type == this.state.selectType
+            && this.state.items[key].color == this.state.selectColor) {
+            increasePoint = true;
+        } else if (this.state.selectType == 'all'
+            && this.state.items[key].color == this.state.selectColor) {
+            increasePoint = true;
+        } else if (this.state.selectColor == 'all'
+            && this.state.items[key].type == this.state.selectType) {
+            increasePoint = true;
+        } else if (this.state.selectType == 'all'
+            && this.state.selectColor == 'all') {
+            increasePoint = true;
+        }
+
+        if (increasePoint) {
+            this.setState({points: ++this.state.points});
+        } else {
+            this.setState({points: --this.state.points});
+        }
+        
+    }
+
+    onPress(key) {
+        this.checkPoint(key);
     }
 
     render() {
         let items = this.state.items.map(( item, key ) => {
             return (
                 <TouchableOpacity
-                    onPress={() => this.onPress(item.number)}
+                    onPress={() => this.onPress(key)}
                     key={item.number}
                     style={{
                         height: 100,
