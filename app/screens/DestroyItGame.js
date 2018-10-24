@@ -47,7 +47,7 @@ export default class DestroyItGame extends Component<Props> {
 
     componentWillUnmount() {
         this.mounted = false;
-        clearInterval(this.intervalUpdateItemId);
+        this.gameOver();
     }
 
     process() {
@@ -60,6 +60,16 @@ export default class DestroyItGame extends Component<Props> {
         this.intervalUpdateItemId = setInterval(() => {
             this.updateItem();
         }, 5);
+        this.intervalRandomSelectionId = setInterval(() => {
+            this.getRandomSelection();
+        }, 5000);
+    }
+
+    gameOver() {
+        this.setState({gameOver: true});
+        clearInterval(this.intervalCreateItemId);
+        clearInterval(this.intervalUpdateItemId);
+        clearInterval(this.intervalRandomSelectionId);
     }
 
     getRandomSelection() {
@@ -156,6 +166,10 @@ export default class DestroyItGame extends Component<Props> {
             this.setState({points: ++this.state.points});
         } else {
             this.setState({points: --this.state.points});
+        }
+
+        if (this.state.points == 0) {
+            this.gameOver();
         }
         
     }
