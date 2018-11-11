@@ -81,6 +81,8 @@ export default class RacingGame extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
+            isMounted: true,
+
             movePlayerVal: new Animated.Value(40),
             playerSide: 'left',
             points: 0,
@@ -130,21 +132,19 @@ export default class RacingGame extends Component<Props> {
 
     componentDidMount() {
         this.mounted = true;
-        if (this.mounted) {
-            this.animateEnemy();
-        }
+        this.animateEnemy();
     }
 
     componentWillUnmount() {
         this.mounted = false;
-        this.setState({gameOver: true});
         Animated.timing(this.state.moveEnemyVal).stop();
         clearInterval(this.refreshIntervalId);
         clearInterval(this.speedIntervalId);
     }
 
     animateEnemy() {
-        this.state.moveEnemyVal.setValue(-100);
+        if (this.mounted) {
+                    this.state.moveEnemyVal.setValue(-100);
         var windowHeight = Dimensions.get('window').height;
 
         var random = Math.floor(Math.random() * 2) + 1;
@@ -189,6 +189,7 @@ export default class RacingGame extends Component<Props> {
                 }
             }
         });
+        }
     }
 
     gameOver() {
