@@ -20,10 +20,11 @@ export default class DestroyItGame extends Component<Props> {
 
     constructor(props) {
         super(props);
-        this.colors = ['all', 'red', 'yellow'];
-        this.types = ['all', 'car'];
-        this.defaultColors = ['red', 'yellow'];
-        this.defaultTypes = ['car'];
+        this.types = ['car', 'plane', 'rocket', 'spaceship'];
+        this.carColors = ['red', 'yellow'];
+        this.planeColors = ['black', 'red'];
+        this.rocketColors = ['black', 'red'];
+        this.spaceshipColors = ['black', 'red'];
         this.state = {
             selectText: 'all',
             selectColor: 'all',
@@ -51,18 +52,20 @@ export default class DestroyItGame extends Component<Props> {
     }
 
     process() {
-        this.getRandomSelection();
-        this.intervalCreateItemId = setInterval(() => {
-            if (this.state.items.length < 10) {
-                this.createItem();
-            }
-        }, 1000);
-        this.intervalUpdateItemId = setInterval(() => {
-            this.updateItem();
-        }, 5);
-        this.intervalRandomSelectionId = setInterval(() => {
+        if (this.mounted) {
             this.getRandomSelection();
-        }, 5000);
+            this.intervalCreateItemId = setInterval(() => {
+                if (this.state.items.length < 10) {
+                    this.createItem();
+                }
+            }, 1000);
+            this.intervalUpdateItemId = setInterval(() => {
+                this.updateItem();
+            }, 5);
+            this.intervalRandomSelectionId = setInterval(() => {
+                this.getRandomSelection();
+            }, 5000);
+        }
     }
 
     gameOver() {
@@ -73,15 +76,15 @@ export default class DestroyItGame extends Component<Props> {
     }
 
     getRandomSelection() {
-        var color = this.colors[Math.floor(Math.random() * this.colors.length)];
+        var color = '';
         var type = this.types[Math.floor(Math.random() * this.types.length)];
+        switch (type) {
+            case "car": color =  this.carColors[Math.floor(Math.random() * this.carColors.length)];
+            case "plane": color =  this.planeColors[Math.floor(Math.random() * this.planeColors.length)];
+            case "rocket": color =  this.rocketColors[Math.floor(Math.random() * this.rocketColors.length)];
+            case "spaceship": color =  this.spaceshipColors[Math.floor(Math.random() * this.spaceshipColors.length)];
+        }
         var select = color + ' ' + type;
-        if (color == 'all') {
-            select = type;
-        }
-        if (type == 'all') {
-            select = color;
-        }
         this.setState({selectText: select, selectColor: color, selectType: type});
     }
 
