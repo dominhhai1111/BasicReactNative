@@ -19,7 +19,7 @@ export default class App extends Component {
                     data={[
                         {key: 'Racing Game', link: 'RacingGame'},
                         {key: 'Destroy It', link: 'DestroyItGame'},
-                        {key: 'Racing Game', link: 'RacingGame'},
+                        {key: 'Quickly', link: 'QuicklyGame'},
                         {key: 'Test', link: 'Test'}
                     ]}
                     renderItem={({item}) => <Text style={styles.item} onPress={() => navigate(item.link, {})}>{item.key}</Text>}

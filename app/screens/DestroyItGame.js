@@ -35,7 +35,6 @@ export default class DestroyItGame extends Component<Props> {
             items: []
         };
 
-        this.itemValue = 0;
         this.items = [];
 
         this.onPress = this.onPress.bind(this);
@@ -73,16 +72,39 @@ export default class DestroyItGame extends Component<Props> {
         clearInterval(this.intervalCreateItemId);
         clearInterval(this.intervalUpdateItemId);
         clearInterval(this.intervalRandomSelectionId);
+
+        Alert.alert(
+            'Gameover',
+            'Play again',
+            [
+                {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Yes', onPress: () => this.resetGame()},
+            ],
+            { cancelable: false }
+        )
+    }
+
+    resetGame() {
+        this.setState({
+            selectText: 'all',
+            selectColor: 'all',
+            selectType: 'all',
+            points: 10,
+            gameOver: false,
+            number: 0,
+            items: []
+        });
+        this.process();
     }
 
     getRandomSelection() {
         var color = '';
         var type = this.types[Math.floor(Math.random() * this.types.length)];
         switch (type) {
-            case "car": color =  this.carColors[Math.floor(Math.random() * this.carColors.length)];
-            case "plane": color =  this.planeColors[Math.floor(Math.random() * this.planeColors.length)];
-            case "rocket": color =  this.rocketColors[Math.floor(Math.random() * this.rocketColors.length)];
-            case "spaceship": color =  this.spaceshipColors[Math.floor(Math.random() * this.spaceshipColors.length)];
+            case "car": color =  this.carColors[Math.floor(Math.random() * this.carColors.length)]; break;
+            case "plane": color =  this.planeColors[Math.floor(Math.random() * this.planeColors.length)]; break;
+            case "rocket": color =  this.rocketColors[Math.floor(Math.random() * this.rocketColors.length)]; break;
+            case "spaceship": color =  this.spaceshipColors[Math.floor(Math.random() * this.spaceshipColors.length)]; break;
         }
         var select = color + ' ' + type;
         this.setState({selectText: select, selectColor: color, selectType: type});
@@ -90,12 +112,31 @@ export default class DestroyItGame extends Component<Props> {
 
     getSourceImage(type, color) {
         var source = '';
-        if (type == 'car' && color == 'red') {
-            source = require('../img/destroyit/car_red.png');
-        }
-
-        if (type == 'car' && color == 'yellow') {
-            source = require('../img/destroyit/car_yellow.png');
+        if (type == 'car') {
+            if (color == 'red') {
+                source = require('../img/destroyit/car_red.png');
+            } else if (color == 'yellow') {
+                source = require('../img/destroyit/car_yellow.png');
+            }
+            
+        } else if (type == 'plane') {
+            if (color == 'red') {
+                source = require('../img/destroyit/plane_red.png');
+            } else if (color == 'black') {
+                source = require('../img/destroyit/plane_black.png');
+            }
+        } else if (type == 'rocket') {
+            if (color == 'red') {
+                source = require('../img/destroyit/rocket_red.png');
+            } else if (color == 'black') {
+                source = require('../img/destroyit/rocket_black.png');
+            }
+        } else if (type == 'spaceship') {
+            if (color == 'red') {
+                source = require('../img/destroyit/spaceship_red.png');
+            } else if (color == 'black') {
+                source = require('../img/destroyit/spaceship_black.png');
+            }
         }
 
         return source;
@@ -104,12 +145,36 @@ export default class DestroyItGame extends Component<Props> {
     createItem() {
         var itemStartPosX = this.getItemStartPosX();
         var itemSpeed = Math.floor(Math.random() * 2 + 1);
-        var color = this.defaultColors[Math.floor(Math.random() * this.defaultColors.length)];
-        var type = this.defaultTypes[Math.floor(Math.random() * this.defaultTypes.length)];
+        var color = '';
+        var type = this.types[Math.floor(Math.random() * this.types.length)];
+        var height = 60;
+        var width = 60;
+        switch (type) {
+            case "car":
+                color =  this.carColors[Math.floor(Math.random() * this.carColors.length)];
+                height = 100;
+                width = 50;
+                break;
+            case "plane":
+                color =  this.planeColors[Math.floor(Math.random() * this.planeColors.length)];
+                height = 60;
+                width = 60;
+                break;
+            case "rocket":
+                color =  this.rocketColors[Math.floor(Math.random() * this.rocketColors.length)];
+                height = 50;
+                width = 50;
+                break;
+            case "spaceship":
+                color =  this.spaceshipColors[Math.floor(Math.random() * this.spaceshipColors.length)];
+                height = 60;
+                width = 60;
+                break;
+        }
         var source = this.getSourceImage(type, color);
         var items = this.state.items;
         items.push(
-            {startPosX: itemStartPosX, speed: 5, nowPositionY: 0, number: this.state.number, color: color, type: type, source: source}
+            {startPosX: itemStartPosX, speed: 5, nowPositionY: 0, number: this.state.number, color: color, type: type, source: source, height: height, width}
         );
 
         ++this.state.number;
