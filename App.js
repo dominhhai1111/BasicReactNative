@@ -6,6 +6,7 @@ import GameList from './app/screens/GameList';
 import RacingGame from './app/screens/RacingGame';
 import DestroyItGame from './app/screens/DestroyItGame';
 import QuicklyGame from './app/screens/QuicklyGame';
+import Memory1Game from './app/screens/Memory1Game';
 import Test from './app/screens/Test';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
@@ -15,6 +16,7 @@ const Navigetion = createStackNavigator({
         RacingGame: {screen: RacingGame},
         DestroyItGame: {screen: DestroyItGame},
         QuicklyGame: {screen: QuicklyGame},
+        Memory1Game: {screen: Memory1Game},
         Test: {screen: Test}
     },
     {

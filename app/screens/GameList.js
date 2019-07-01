@@ -20,6 +20,7 @@ export default class App extends Component {
                         {key: 'Racing Game', link: 'RacingGame'},
                         {key: 'Destroy It', link: 'DestroyItGame'},
                         {key: 'Quickly', link: 'QuicklyGame'},
+                        {key: 'Memory1', link: 'Memory1Game'},
                         {key: 'Test', link: 'Test'}
                     ]}
                     renderItem={({item}) => <Text style={styles.item} onPress={() => navigate(item.link, {})}>{item.key}</Text>}
